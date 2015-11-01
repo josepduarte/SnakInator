@@ -1,0 +1,60 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.all;
+
+entity snakBrain_TestBench is
+end snakBrain_TestBench;
+
+architecture Stimulus of snakBrain_TestBench is
+	
+	signal 	s_clk										: std_logic;
+	signal	s_sw3, s_sw2, s_sw1, s_sw0			: std_logic;
+	signal	s_key3,  s_key2, s_key1, s_key0	: std_logic;
+	signal	s_hex0, s_hex1, s_hex2, s_hex3	: std_logic_vector(6 downto 0);
+
+begin 
+
+		uut : entity work.snakeBrain(Strut)
+			port map(
+				clk 	=> 	s_clk,
+				sw3	=> 	s_sw3,
+				sw2	=>		s_sw2,
+				sw1	=> 	s_sw1,
+				sw0 	=> 	s_sw0,
+				key3	=> 	s_key3,
+				key2	=> 	s_key2,
+				key1	=> 	s_key1,
+				key0	=> 	s_key0,
+				hex3	=> 	s_hex3,
+				hex2	=>		s_hex2,
+				hex1	=> 	s_hex1,
+				hex0 	=>		s_hex0
+			);
+			
+		clock_proc	:	process
+			begin
+				s_clk <= '0'; wait for 20 ns;
+				s_clk <= '1'; wait for 20 ns;
+			end process;
+			
+				stim_proc	: process
+				begin
+					s_key3 <= '1';
+					s_key2 <= '1';
+					s_key1 <= '1';
+					s_key0 <= '1';
+					s_sw3 <= '0';
+					s_sw2 <= '1';
+					wait for 500000000 ns; -- 0,5 sec
+					
+					s_key0 <= '0';	-- direita ´´88
+					wait for 1000000000 ns; -- 1 sec
+					
+					s_key0 <= '1';
+					s_key1 <= '0'; -- baixo 8´'88
+					wait for 1000000000 ns; -- 1 sec 
+					
+					s_key1 <= '1';
+					s_key0 <= '0'; -- direita 8'-8
+					wait for 1000000000 ns; -- 1 sec
+		end process;
+end Stimulus;
